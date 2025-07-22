@@ -421,3 +421,13 @@
 2025-07-22T16:33:39.966Z - ==============================
 2025-07-22T16:33:39.966Z - [SERVER] PayOS Webhook URL: http://localhost:8080/api/v1/payment/payos-webhook
 2025-07-22T16:33:39.972Z - [SERVER] Cron jobs started.
+2025-07-22T17:28:57.747Z - ==============================
+2025-07-22T17:28:57.749Z - [SERVER] Server is running on port: 8080
+2025-07-22T17:28:57.750Z - [SERVER] NODE_ENV: undefined
+2025-07-22T17:28:57.750Z - [SERVER] BASE_URL: http://localhost:8080
+2025-07-22T17:28:57.751Z - [SERVER] FRONTEND_URL: https://thuetool.online
+2025-07-22T17:28:57.752Z - [SERVER] Allowed Origins: https://thuetool.online,https://www.thuetool.online,https://thuetool-online.vercel.app,http://localhost:3000,http://localhost:5173
+2025-07-22T17:28:57.752Z - [SERVER] MongoDB URI: mongodb+srv://Nhungcamcu:Taivu14062001@data.qvkc4vi.mongodb.net/thuetool_data?retryWrites=true&w=majority&appName=data
+2025-07-22T17:28:57.753Z - ==============================
+2025-07-22T17:28:57.753Z - [SERVER] PayOS Webhook URL: http://localhost:8080/api/v1/payment/payos-webhook
+2025-07-22T17:28:57.762Z - [SERVER] Cron jobs started.
