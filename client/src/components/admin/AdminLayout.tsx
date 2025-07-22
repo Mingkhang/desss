@@ -2,7 +2,6 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthProvider';
 import { Button } from '../ui/button';
 import { LayoutDashboard, KeyRound, Settings, LogOut, Ticket, History } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 const navItems = [
     { href: '/admin/dashboard', label: 'Tổng quan', icon: LayoutDashboard },
@@ -41,8 +40,6 @@ export function AdminLayout() {
                             <span>{item.label}</span>
                         </NavLink>
                     ))}
-                    {/* Thêm link vào menu admin */}
-                    <Link to="/admin/agents">Quản lý đại lý</Link>
                 </nav>
                 <Button onClick={handleLogout} variant="destructive" className="mt-4">
                     <LogOut className="w-5 h-5 mr-2" />

@@ -17,6 +17,15 @@ router.post('/agent/login', agentAuthController.agentLoginAndOrder);
 router.post('/agent/orders', agentOrderController.createAgentOrder);
 router.get('/agent/orders', agentOrderController.getAgentOrders);
 router.get('/agent/orders/:orderId', agentOrderController.getAgentOrderDetail);
+// Route lấy số dư đại lý
+router.get('/agent/balance', async (req, res) => {
+  const agentId = req.query.agentId;
+  if (!agentId) return res.status(400).json({ success: false, message: 'Thiếu agentId' });
+  const Agent = require('../models/agent.model').default;
+  const agent = await Agent.findById(agentId);
+  if (!agent) return res.status(404).json({ success: false, message: 'Không tìm thấy đại lý' });
+  res.json({ success: true, balance: agent.balance });
+});
 
 // Public Routes
 router.use("/ping", pingRouter);

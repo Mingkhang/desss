@@ -3,7 +3,7 @@ import Transaction from '../models/transaction.model';
 
 // Cron chạy mỗi 30 phút
 export const startCleanupFailedExpiredCancelledJob = async () => {
-  cron.schedule('*/30 * * * *', async () => {
+  cron.schedule('0 0 * * 0', async () => { // 0h Chủ Nhật
     console.log('Running cleanup for EXPIRED, CANCELLED and old CREATED transactions...');
     try {
       // Tính thời gian 10 phút trước

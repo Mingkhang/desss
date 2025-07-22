@@ -9,10 +9,12 @@ import { generateOrderId } from '../../utils/orderId';
 // Tạo đơn hàng thuê tài khoản cho đại lý
 export const createAgentOrder = async (req: Request, res: Response) => {
   try {
-    const agentId = req.body.agentId;
-    const { rentalPackageKey } = req.body;
+    const { agentName, rentalPackageKey } = req.body;
+    // Tìm đúng đại lý theo tên
+    const agent = await Agent.findOne({ name: agentName });
+    if (!agent) return res.status(404).json({ success: false, message: 'Không tìm thấy đại lý' });
 
-    // Lấy giá gói thuê từ MongoDB (collection Setting)
+    // Lấy giá gói thuê từ Setting
     const Setting = require('../../models/setting.model').default;
     const settingDoc = await Setting.findOne();
     if (!settingDoc || !settingDoc.rentalPrices || !settingDoc.rentalPrices.has(rentalPackageKey)) {
@@ -20,14 +22,14 @@ export const createAgentOrder = async (req: Request, res: Response) => {
     }
     const price = settingDoc.rentalPrices.get(rentalPackageKey).price;
 
-    // Kiểm tra số dư đại lý
-    const agent = await Agent.findById(agentId);
-    if (!agent) return res.status(404).json({ success: false, message: 'Không tìm thấy đại lý' });
+    // Tạo mã đơn hàng trạng thái CREATED
+    const orderId = generateOrderId(agent._id.toString());
+    let transactionStatus = 'CREATED';
+
+    // Kiểm tra số dư
     if (agent.balance < price) {
-      // Tạo giao dịch thất bại
-      const orderId = generateOrderId(agentId);
       await AgentTransaction.create({
-        agentId,
+        agentId: agent._id,
         orderId,
         price,
         status: 'FAILED',
@@ -39,10 +41,8 @@ export const createAgentOrder = async (req: Request, res: Response) => {
     // Tìm tài khoản available
     const account = await Account.findOne({ status: 'available' });
     if (!account) {
-      // Tạo giao dịch thất bại
-      const orderId = generateOrderId(agentId);
       await AgentTransaction.create({
-        agentId,
+        agentId: agent._id,
         orderId,
         price,
         status: 'FAILED',
@@ -51,21 +51,20 @@ export const createAgentOrder = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Không còn tài khoản trống', orderId });
     }
 
-    // Tạo orderId
-    const orderId = generateOrderId(agentId);
-
     // Tạo giao dịch thành công
-    const expiredAt = new Date(Date.now() + 6 * 60 * 60 * 1000); // 6 tiếng
+    transactionStatus = 'PAID';
+    const expiredAt = new Date(Date.now() + settingDoc.rentalPrices.get(rentalPackageKey).duration * 60 * 60 * 1000);
     const transaction = await AgentTransaction.create({
-      agentId,
+      agentId: agent._id,
       orderId,
       accountId: account._id,
       price,
-      status: 'PAID',
+      status: transactionStatus,
       createdAt: new Date(),
       expiredAt,
       username: account.username,
       password: account.password,
+      balanceAfter: agent.balance - price,
     });
 
     // Trừ số dư
@@ -118,7 +117,9 @@ export const createAgentOrder = async (req: Request, res: Response) => {
 // Lấy danh sách đơn hàng của đại lý
 export const getAgentOrders = async (req: Request, res: Response) => {
   try {
-    const agentId = req.body.agentId || req.query.agentId;
+    const agentId = req.query.agentId;
+    if (!agentId) return res.status(400).json({ success: false, message: 'Thiếu agentId' });
+    const AgentTransaction = require('../../models/agentTransaction.model').default;
     const orders = await AgentTransaction.find({ agentId }).sort({ createdAt: -1 });
     res.json({ success: true, orders });
   } catch (error) {

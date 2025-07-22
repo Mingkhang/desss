@@ -6,7 +6,7 @@ import { startVoucherCleanupJob } from "./jobs/voucher-cleanup.job"
 import { startTransactionCleanupJob } from "./jobs/transaction-cleanup.job"
 import { startCleanupFailedExpiredCancelledJob } from "./jobs/cleanup-failed-expired-cancelled.job"
 import { startExpiredCleanupJob } from "./jobs/expired-cleanup.job"
-import { startMonthlyAgentTransactionCleanup } from "./jobs/agent-transaction-cleanup.job";
+// import { startMonthlyAgentTransactionCleanup } from "./jobs/agent-transaction-cleanup.job";
 import fs from "fs"
 import path from "path"
 
@@ -49,7 +49,7 @@ server.listen(PORT, () => {
   const webhookUrl = `${BASE_URL}/api/v1/payment/payos-webhook`;
   logToFile(`[SERVER] PayOS Webhook URL: ${webhookUrl}`);
   // Khởi động từng cronjob trực tiếp như cách cũ
-  startMonthlyAgentTransactionCleanup();
+  // startMonthlyAgentTransactionCleanup();
   startExpiredCleanupJob(io);
   startVoucherCleanupJob();
   startTransactionCleanupJob();

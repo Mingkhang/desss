@@ -1,5 +1,4 @@
 import AgentLoginPage from './pages/agent/AgentLoginPage';
-                <Route path="/agent/login" element={<AgentLoginPage />} />
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from './contexts/ThemeProvider';
@@ -36,7 +35,7 @@ export default function App() {
                 {/* Public Routes */}
                 <Route path="/" element={<HomePage />} />
                 <Route path="/admin/login" element={<AdminLoginPage />} />
-
+                <Route path="/agent/login" element={<AgentLoginPage />} />
                 {/* THÊM MỚI: Các route cho luồng thanh toán */}
                 <Route path="/rent/:accountId" element={<RentalPage />} />
                 <Route path="/thanh-cong/:orderCode" element={<SuccessPage />} />

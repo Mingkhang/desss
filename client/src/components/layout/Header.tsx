@@ -58,11 +58,21 @@ export function Header() {
                         <div className="bg-white rounded-md p-1 flex items-center justify-center shadow border">
                             <ThemeToggle />
                         </div>
+                        {/* Nút đăng nhập admin - chỉ PC */}
                         <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => navigate('/admin')}
-                            className="bg-yellow-400 hover:bg-yellow-500 text-black rounded-md p-1 border border-yellow-500"
+                            onClick={() => navigate('/admin/login')}
+                            className="bg-yellow-400 hover:bg-yellow-500 text-black rounded-md p-1 border border-yellow-500 hidden md:inline-flex"
+                        >
+                            <User className="h-[1.5rem] w-[1.5rem]" />
+                        </Button>
+                        {/* Nút đăng nhập đại lý - chỉ PC */}
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => navigate('/agent/login')}
+                            className="bg-blue-400 hover:bg-blue-500 text-black rounded-md p-1 border border-blue-500 ml-1 hidden md:inline-flex"
                         >
                             <User className="h-[1.5rem] w-[1.5rem]" />
                         </Button>

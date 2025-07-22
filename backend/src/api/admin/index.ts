@@ -8,11 +8,13 @@ import statisticsAdminRoutes from './statistics.admin.routes';
 
 const router = Router();
 
+import agentsAdminRoutes from './agents.admin.routes';
 router.use('/auth', authAdminRoutes);
 router.use('/accounts', accountAdminRoutes);
 router.use('/settings', settingAdminRoutes);
 router.use('/vouchers', voucherAdminRoutes);
 router.use('/transactions', transactionAdminRoutes);
 router.use('/statistics', statisticsAdminRoutes);
+router.use('/agents', agentsAdminRoutes);
 
 export default router;
