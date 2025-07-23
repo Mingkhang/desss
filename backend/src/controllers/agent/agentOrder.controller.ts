@@ -39,7 +39,7 @@ export const createAgentOrder = async (req: Request, res: Response) => {
     }
 
     // Tìm tài khoản available
-    const account = await Account.findOne({ status: 'available' });
+    const account = await Account.findOne({ status: 'available' }).select('+password');
     if (!account) {
       await AgentTransaction.create({
         agentId: agent._id,
